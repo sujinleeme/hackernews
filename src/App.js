@@ -57,8 +57,8 @@ class App extends Component {
 						onChange={this.onSearchChange}
 					>
 						Search
-					
 					</Search>
+					/>
 					
 					<Table
 						list={list}
@@ -72,23 +72,29 @@ class App extends Component {
 	}
 }
 
-const Search = ({value, onChange, children}) => {
-	console.log(children)
-	return(
-		<form>
-			<input
-				type="text"
-				value={value}
-				onChange={onChange}
-			/>
-			{children}
-		
-		</form>
+const Search = ({value, onChange, children}) =>
 	
+	<form>
+		<input
+			type="text"
+			value={value}
+			onChange={onChange}
+		/>
+		{children}
 	
-	)
-}
+	</form>
 
+const Search = ({value, onChange, children}) =>
+	<form>
+		{children}
+		<input
+			type="text"
+			value={value}
+			onChange={onChange}
+		/>
+	</form>
+	>>> >>> > 1
+c47e14be38d4e369ea1bb2f44f8253fa96c7325
 
 const largeColumn = {
 	width: "40%"
