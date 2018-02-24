@@ -1,38 +1,37 @@
 import React, {Component} from "react"
 import "./App.css"
 
+const DEFAULT_QUERY = "redux"
+const PATH_BASE = "https://hn.algolia.com/api/v1"
+const PATH_SEARCH = "/search"
+const PARAM_SEARCH = "query="
+
+const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`
+
 const isSearched = (searchTerm) => item =>
 	item.title.toLowerCase().includes(searchTerm.toLowerCase())
-
-const list = [
-	{
-		title: "React",
-		url: "https://facebook.github.io/react/",
-		author: "Jordan Walke",
-		num_comments: 3,
-		points: 4,
-		objectID: 0
-	},
-	{
-		title: "Redux",
-		url: "https://github.com/reactjs/redux",
-		author: "Dan Abramov, Andrew Clark",
-		num_comments: 2,
-		points: 5,
-		objectID: 1
-	}
-]
 
 class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			list: list,
-			searchTerm: ""
+			result: null,
+			searchTerm: DEFAULT_QUERY
 		}
 		this.onDismiss = this.onDismiss.bind(this)
 		this.onSearchChange = this.onSearchChange.bind(this)
-		
+		this.setSearchTopStories = this.setSearchTopStories.bind(this)
+	}
+	
+	componentDidMount() {
+		fetch(url)
+			.then(response => response.json())
+			.then(result => this.setSearchTopStories(result))
+			.catch(error => error)
+	}
+	
+	setSearchTopStories(result) {
+		this.setState({result})
 	}
 	
 	onSearchChange(event) {
@@ -41,13 +40,14 @@ class App extends Component {
 	
 	onDismiss(id) {
 		const isNotId = item => item.objectID !== id
-		const updatedList = this.state.list.filter(isNotId)
-		this.setState({list: updatedList})
+		const updatedHits = this.state.result.hits.filter(isNotId)
+		this.setState({
+			result: {...this.state.result, hits: updatedHits}
+		})
 	}
 	
 	render() {
-		
-		const {list, searchTerm} = this.state
+		const {searchTerm, result} = this.state
 		
 		return (
 			<div className="page">
@@ -58,13 +58,13 @@ class App extends Component {
 					>
 						Search
 					</Search>
-					/>
-					
+					{result &&
 					<Table
-						list={list}
+						list={result.hits}
 						pattern={searchTerm}
 						onDismiss={this.onDismiss}
 					/>
+					}
 				</div>
 			
 			</div>
@@ -73,18 +73,6 @@ class App extends Component {
 }
 
 const Search = ({value, onChange, children}) =>
-	
-	<form>
-		<input
-			type="text"
-			value={value}
-			onChange={onChange}
-		/>
-		{children}
-	
-	</form>
-
-const Search = ({value, onChange, children}) =>
 	<form>
 		{children}
 		<input
@@ -93,8 +81,6 @@ const Search = ({value, onChange, children}) =>
 			onChange={onChange}
 		/>
 	</form>
-	>>> >>> > 1
-c47e14be38d4e369ea1bb2f44f8253fa96c7325
 
 const largeColumn = {
 	width: "40%"
