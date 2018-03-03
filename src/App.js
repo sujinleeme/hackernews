@@ -1,6 +1,7 @@
-import React, {Component} from "react"
-import "./App.css"
+import React, { Component } from "react"
 import axios from "axios"
+
+import "./App.css"
 
 const DEFAULT_QUERY = "redux"
 const DEFAULT_HPP = "100"
@@ -134,24 +135,24 @@ class App extends Component {
 			<div className="page">
 				<div className="interactions">
 					<Search
-						value={searchTerm}
-						onChange={this.onSearchChange}
-						onSubmit={this.onSearchSubmit}
+						value={ searchTerm }
+						onChange={ this.onSearchChange }
+						onSubmit={ this.onSearchSubmit }
 					>
 						Search
 					</Search>
-					{error
+					{ error
 						? <div className="interactions">
 							<p>Something went wrong.</p>
 						</div>
 						: <Table
-							list={list}
-							onDismiss={this.onDismiss}
+							list={ list }
+							onDismiss={ this.onDismiss }
 						/>
 					}
 					
 					<div className="interactions">
-						<Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
+						<Button onClick={ () => this.fetchSearchTopStories(searchKey, page + 1) }>
 							More
 						</Button>
 					</div>
@@ -168,47 +169,53 @@ const Search = ({
 	                onSubmit,
 	                children
                 }) =>
-	<form onSubmit={onSubmit}>
+	<form onSubmit={ onSubmit }>
 		<input
 			type="text"
-			value={value}
-			onChange={onChange}
+			value={ value }
+			onChange={ onChange }
 		/>
 		<button type="submit">
-			{children}
+			{ children }
 		</button>
 	</form>
 
 const Table = ({list, pattern, onDismiss}) =>
 	<div className="table">
-		{list.map(item =>
-			<div key={item.objectID}>
-        <span style={largeColumn}>
-              <a href={item.url}>{item.title}</a>
+		{ list.map(item =>
+			<div key={ item.objectID }>
+        <span style={ largeColumn }>
+              <a href={ item.url }>{ item.title }</a>
             </span>
-				<span style={midColumn}>
-					{item.author}</span>
-				<span style={smallColumn}>
-					{item.num_comments}</span>
-				<span style={smallColumn}>
+				<span style={ midColumn }>
+					{ item.author }</span>
+				<span style={ smallColumn }>
+					{ item.num_comments }</span>
+				<span style={ smallColumn }>
 
-					{item.points}</span>
-				<span style={smallColumn}>
-              <Button onClick={() => onDismiss(item.objectID)}>
+					{ item.points }</span>
+				<span style={ smallColumn }>
+              <Button onClick={ () => onDismiss(item.objectID) }>
                 Dismiss
               </Button>
             </span>
 			</div>
-		)}
+		) }
 	</div>
 
 const Button = ({onClick, className = "", children}) =>
 	<button
-		onClick={onClick}
-		className={className}
+		onClick={ onClick }
+		className={ className }
 		type="button"
 	>
-		{children}
+		{ children }
 	</button>
 
 export default App
+
+export {
+	Button,
+	Search,
+	Table
+}
