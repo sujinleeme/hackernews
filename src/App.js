@@ -264,6 +264,7 @@ const Table = ({
         <Sort
 	        sortKey={ "TITLE" }
 	        onSort={ onSort }
+	        activeSortKey={ sortKey }
         >
           Title
         </Sort>
